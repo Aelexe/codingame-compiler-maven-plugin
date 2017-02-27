@@ -46,6 +46,9 @@ public class ProjectCompiler {
 		// Add the class to the included classes.
 		includedClasses.add(rootClass);
 
+		// Apend the default imports.
+		compiledProject.append("import java.util.*;\r\nimport java.io.*;\r\nimport java.math.*;\r\n");
+
 		// Append the class opening and code to the compilation.
 		compiledProject.append("class " + rootClass.getName() + " {\r\n" + rootClass.getCode());
 

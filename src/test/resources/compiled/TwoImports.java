@@ -1,3 +1,6 @@
+import java.util.*;
+import java.io.*;
+import java.math.*;
 class SimpleClass {
 private static String staticString = "This is a static string.";
 private int zero = 0;
