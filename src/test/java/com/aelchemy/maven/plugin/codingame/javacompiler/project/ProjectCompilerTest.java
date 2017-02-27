@@ -1,7 +1,5 @@
 package com.aelchemy.maven.plugin.codingame.javacompiler.project;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 
@@ -21,7 +19,7 @@ public class ProjectCompilerTest {
 		ProjectDTO project = new ProjectDTO();
 		project.addClass(simpleClass);
 
-		assertEquals(TestUtil.readResourceFile("/compiled/OneClass.java"), new ProjectCompiler(simpleClass, project).compileProject());
+		TestUtil.assertStringEquals(TestUtil.readResourceFile("/compiled/OneClass.java"), new ProjectCompiler(simpleClass, project).compileProject());
 	}
 
 	@Test
@@ -48,6 +46,33 @@ public class ProjectCompilerTest {
 		project.addClass(stringClass);
 		project.addClass(packagedClass);
 
-		assertEquals(TestUtil.readResourceFile("/compiled/TwoImports.java"), new ProjectCompiler(simpleClass, project).compileProject());
+		TestUtil.assertStringEquals(TestUtil.readResourceFile("/compiled/TwoImports.java"), new ProjectCompiler(simpleClass, project).compileProject());
+	}
+
+	@Test
+	public void testCompileProject_NestedImports() throws IOException, URISyntaxException {
+		ClassDTO simpleClass = new ClassDTO();
+		simpleClass.setName("SimpleClass");
+		simpleClass.setCode(TestUtil.readResourceFile("/code_content/compressed/SimpleClass.java"));
+
+		ClassDTO stringClass = new ClassDTO();
+		stringClass.setPackage("string.util");
+		stringClass.setName("StringClass");
+		stringClass.setCode(TestUtil.readResourceFile("/code_content/compressed/StringClass.java"));
+
+		ClassDTO packagedClass = new ClassDTO();
+		packagedClass.setPackage("packaged");
+		packagedClass.setName("PackagedClass");
+		packagedClass.setCode(TestUtil.readResourceFile("/code_content/compressed/PackagedClass.java"));
+
+		simpleClass.addImport("string.util.StringClass");
+		stringClass.addImport("packaged.PackagedClass");
+
+		ProjectDTO project = new ProjectDTO();
+		project.addClass(simpleClass);
+		project.addClass(stringClass);
+		project.addClass(packagedClass);
+
+		TestUtil.assertStringEquals(TestUtil.readResourceFile("/compiled/NestedImports.java"), new ProjectCompiler(simpleClass, project).compileProject());
 	}
 }
