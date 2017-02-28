@@ -1,4 +1,4 @@
-package com.aelchemy.maven.plugin.codingame.javacompiler;
+package com.aelchemy.maven.plugin.codingame.compiler;
 
 import static org.junit.Assert.assertEquals;
 

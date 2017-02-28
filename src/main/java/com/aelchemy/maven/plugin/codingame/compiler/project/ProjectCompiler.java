@@ -1,9 +1,9 @@
-package com.aelchemy.maven.plugin.codingame.javacompiler.project;
+package com.aelchemy.maven.plugin.codingame.compiler.project;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import com.aelchemy.maven.plugin.codingame.javacompiler.classs.ClassDTO;
+import com.aelchemy.maven.plugin.codingame.compiler.classs.ClassDTO;
 
 /**
  * {@link ProjectCompiler} contains the functionality for compiling a {@link ProjectDTO} into a single .java file.

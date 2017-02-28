@@ -1,12 +1,14 @@
-package com.aelchemy.maven.plugin.codingame.javacompiler.project;
+package com.aelchemy.maven.plugin.codingame.compiler.project;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 
 import org.junit.Test;
 
-import com.aelchemy.maven.plugin.codingame.javacompiler.TestUtil;
-import com.aelchemy.maven.plugin.codingame.javacompiler.classs.ClassDTO;
+import com.aelchemy.maven.plugin.codingame.compiler.TestUtil;
+import com.aelchemy.maven.plugin.codingame.compiler.classs.ClassDTO;
+import com.aelchemy.maven.plugin.codingame.compiler.project.ProjectCompiler;
+import com.aelchemy.maven.plugin.codingame.compiler.project.ProjectDTO;
 
 public class ProjectCompilerTest {
 

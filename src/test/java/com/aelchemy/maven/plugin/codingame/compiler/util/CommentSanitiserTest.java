@@ -1,11 +1,12 @@
-package com.aelchemy.maven.plugin.codingame.javacompiler.util;
+package com.aelchemy.maven.plugin.codingame.compiler.util;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 
 import org.junit.Test;
 
-import com.aelchemy.maven.plugin.codingame.javacompiler.TestUtil;
+import com.aelchemy.maven.plugin.codingame.compiler.TestUtil;
+import com.aelchemy.maven.plugin.codingame.compiler.util.CommentSanitiser;
 
 public class CommentSanitiserTest {
 
