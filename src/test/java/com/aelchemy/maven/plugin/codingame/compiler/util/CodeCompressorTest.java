@@ -8,7 +8,6 @@ import java.net.URISyntaxException;
 import org.junit.Test;
 
 import com.aelchemy.maven.plugin.codingame.compiler.TestUtil;
-import com.aelchemy.maven.plugin.codingame.compiler.util.CodeCompressor;
 
 public class CodeCompressorTest {
 
@@ -34,6 +33,12 @@ public class CodeCompressorTest {
 	public void testCompressCode_ImportClass() throws IOException, URISyntaxException {
 		assertEquals(TestUtil.readResourceFile("/code_content/compressed/ImportClass.java"),
 				CodeCompressor.compressCode(TestUtil.readResourceFile("/code_content/raw/ImportClass.java")));
+	}
+
+	@Test
+	public void testCompressCode_InterfaceClass() throws IOException, URISyntaxException {
+		assertEquals(TestUtil.readResourceFile("/code_content/compressed/InterfaceClass.java"),
+				CodeCompressor.compressCode(TestUtil.readResourceFile("/code_content/raw/InterfaceClass.java")));
 	}
 
 }

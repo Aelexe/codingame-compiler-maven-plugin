@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
-import com.aelchemy.maven.plugin.codingame.compiler.classs.ClassDTO;
-import com.aelchemy.maven.plugin.codingame.compiler.classs.ClassParser;
+import com.aelchemy.maven.plugin.codingame.compiler.java.JavaDTO;
+import com.aelchemy.maven.plugin.codingame.compiler.java.JavaParser;
 import com.aelchemy.maven.plugin.codingame.compiler.mojo.MojoLog;
 
 public class ProjectParser {
@@ -27,8 +27,8 @@ public class ProjectParser {
 
 		MojoLog.subheaderInfo("Parsing class files");
 		for (File javaFile : javaFiles) {
-			ClassDTO classDto = ClassParser.parseClass(FileUtils.readFileToString(javaFile, "UTF-8"));
-			project.addClass(classDto);
+			JavaDTO javaDto = JavaParser.parseClass(FileUtils.readFileToString(javaFile, "UTF-8"));
+			project.addClass(javaDto);
 		}
 		MojoLog.info("Complete.");
 		MojoLog.breakLine();

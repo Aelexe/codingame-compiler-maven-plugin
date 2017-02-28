@@ -1,20 +1,21 @@
-package com.aelchemy.maven.plugin.codingame.compiler.classs;
+package com.aelchemy.maven.plugin.codingame.compiler.java;
 
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * {@link ClassDTO} is a DTO containing the package name, class name and fully qualified imports contained within a .java file.
+ * {@link JavaDTO} is a DTO containing the package name, name and fully qualified imports contained within a .java file.
  * 
  * @author Aelexe
  *
  */
-public class ClassDTO {
+public class JavaDTO {
 
-	private String sPackage, name;
+	private String sPackage, name, sInterface;
 	private final Set<String> imports = new HashSet<String>();
 	private String code;
 	private boolean containsMainMethod;
+	private boolean isInterface, implementsInterface;
 
 	public String getPackage() {
 		return sPackage;
@@ -41,6 +42,15 @@ public class ClassDTO {
 		this.name = name;
 	}
 
+	public String getInterface() {
+		return sInterface;
+	}
+
+	public void setInterface(final String sInterface) {
+		this.sInterface = sInterface;
+		implementsInterface = true;
+	}
+
 	public Set<String> getImports() {
 		return imports;
 	}
@@ -63,6 +73,18 @@ public class ClassDTO {
 
 	public void setContainsMainMethod(final boolean containsMainMethod) {
 		this.containsMainMethod = containsMainMethod;
+	}
+
+	public boolean isInterface() {
+		return isInterface;
+	}
+
+	public void setIsInterface(final boolean isInterface) {
+		this.isInterface = isInterface;
+	}
+
+	public boolean implementsInterface() {
+		return implementsInterface;
 	}
 
 }

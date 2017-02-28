@@ -3,7 +3,7 @@ package com.aelchemy.maven.plugin.codingame.compiler.project;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.aelchemy.maven.plugin.codingame.compiler.classs.ClassDTO;
+import com.aelchemy.maven.plugin.codingame.compiler.java.JavaDTO;
 
 /**
  * {@link ProjectCompiler} contains the functionality for compiling a {@link ProjectDTO} into a single .java file.
@@ -14,12 +14,12 @@ import com.aelchemy.maven.plugin.codingame.compiler.classs.ClassDTO;
 public class ProjectCompiler {
 
 	private final ProjectDTO project;
-	private final ClassDTO rootClass;
+	private final JavaDTO rootClass;
 	private final StringBuilder compiledProject = new StringBuilder();
 	/** List of classes that have already been included in the compilation. */
-	private final Set<ClassDTO> includedClasses = new HashSet<ClassDTO>();
+	private final Set<JavaDTO> includedClasses = new HashSet<JavaDTO>();
 
-	public ProjectCompiler(final ClassDTO rootClass, final ProjectDTO project) {
+	public ProjectCompiler(final JavaDTO rootClass, final ProjectDTO project) {
 		this.project = project;
 		this.rootClass = rootClass;
 	}
@@ -58,7 +58,7 @@ public class ProjectCompiler {
 		// Append imports.
 		for (String classImport : rootClass.getImports().toArray(new String[0])) {
 			if (project.containsClass(classImport)) {
-				ClassDTO importDto = project.getClasses().get(classImport);
+				JavaDTO importDto = project.getClasses().get(classImport);
 				if (!includedClasses.contains(importDto)) {
 					appendClass(importDto);
 				}
@@ -66,7 +66,7 @@ public class ProjectCompiler {
 		}
 
 		// Append classes in the same package (as they may be used without imports).
-		for (ClassDTO packageClass : project.getClassesByPackage().get(rootClass.getPackage())) {
+		for (JavaDTO packageClass : project.getClassesByPackage().get(rootClass.getPackage())) {
 			if (!includedClasses.contains(packageClass)) {
 				appendClass(packageClass);
 			}
@@ -77,14 +77,22 @@ public class ProjectCompiler {
 	}
 
 	/**
-	 * Appends the {@link ClassDTO} to the compilation, followed by any of its imports.
+	 * Appends the {@link JavaDTO} to the compilation, followed by any of its imports.
 	 * 
-	 * @param classDto The {@link ClassDTO} to append to the compilation.
+	 * @param javaDto The {@link JavaDTO} to append to the compilation.
 	 */
-	private void appendClass(final ClassDTO classDto) {
+	private void appendClass(final JavaDTO javaDto) {
 		// Add the class to the included classes and append the class opening and code to the compilation.
-		includedClasses.add(classDto);
-		compiledProject.append("private static class " + classDto.getName() + " {\r\n" + classDto.getCode());
+		includedClasses.add(javaDto);
+		if (javaDto.isInterface()) {
+			compiledProject.append("private static interface " + javaDto.getName());
+		} else {
+			compiledProject.append("private static class " + javaDto.getName());
+			if (javaDto.implementsInterface()) {
+				compiledProject.append(" implements " + javaDto.getInterface());
+			}
+		}
+		compiledProject.append(" {\r\n" + javaDto.getCode());
 
 		// Append new line between class code and import code.
 		compiledProject.append("\r\n");
@@ -93,9 +101,9 @@ public class ProjectCompiler {
 		compiledProject.append("}\r\n");
 
 		// Append imports.
-		for (String classImport : classDto.getImports().toArray(new String[0])) {
+		for (String classImport : javaDto.getImports().toArray(new String[0])) {
 			if (project.containsClass(classImport)) {
-				ClassDTO importDto = project.getClasses().get(classImport);
+				JavaDTO importDto = project.getClasses().get(classImport);
 				if (!includedClasses.contains(importDto)) {
 					appendClass(importDto);
 				}
@@ -103,7 +111,7 @@ public class ProjectCompiler {
 		}
 
 		// Append classes in the same package (as they may be used without imports).
-		for (ClassDTO packageClass : project.getClassesByPackage().get(classDto.getPackage())) {
+		for (JavaDTO packageClass : project.getClassesByPackage().get(javaDto.getPackage())) {
 			if (!includedClasses.contains(packageClass)) {
 				appendClass(packageClass);
 			}

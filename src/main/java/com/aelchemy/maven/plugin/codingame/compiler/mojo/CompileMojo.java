@@ -11,7 +11,7 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
-import com.aelchemy.maven.plugin.codingame.compiler.classs.ClassDTO;
+import com.aelchemy.maven.plugin.codingame.compiler.java.JavaDTO;
 import com.aelchemy.maven.plugin.codingame.compiler.project.ProjectCompiler;
 import com.aelchemy.maven.plugin.codingame.compiler.project.ProjectDTO;
 import com.aelchemy.maven.plugin.codingame.compiler.project.ProjectParser;
@@ -43,7 +43,7 @@ public class CompileMojo extends AbstractMojo {
 			return;
 		}
 
-		for (ClassDTO mainClass : project.getMainClasses()) {
+		for (JavaDTO mainClass : project.getMainClasses()) {
 			if (mainClass.containsMainMethod()) {
 				MojoLog.subheaderInfo("Compiling for " + mainClass.getName());
 				String compiledCode = new ProjectCompiler(mainClass, project).compileProject();
