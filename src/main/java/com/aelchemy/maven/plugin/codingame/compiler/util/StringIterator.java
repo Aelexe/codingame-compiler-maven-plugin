@@ -2,6 +2,8 @@ package com.aelchemy.maven.plugin.codingame.compiler.util;
 
 public class StringIterator {
 
+	private static final char CARRIAGE_RETURN = '\r';
+	private static final char NEW_LINE = '\n';
 	private static final char ESCAPE = '\\';
 	private static final char NULL = '\0';
 
@@ -23,6 +25,14 @@ public class StringIterator {
 		} else {
 			return string.charAt(offsettedIndex);
 		}
+	}
+
+	public boolean isLineSeparator() {
+		return getChar() == CARRIAGE_RETURN || getChar() == NEW_LINE;
+	}
+
+	public boolean isLineSeparator(final int indexOffset) {
+		return getChar(indexOffset) == CARRIAGE_RETURN || getChar(indexOffset) == NEW_LINE;
 	}
 
 	public boolean isEscaped() {
@@ -50,6 +60,12 @@ public class StringIterator {
 		}
 
 		return getChar();
+	}
+
+	public void moveToNextSeparator() {
+		while (isLineSeparator(+1)) {
+			next();
+		}
 	}
 
 }

@@ -9,7 +9,6 @@ public class CommentSanitiser {
 	private static final char SLASH = '/';
 	private static final char ASTERISK = '*';
 	private static final char DOUBLE_QUOTE = '"';
-	private static final char NEW_LINE = '\n';
 	private static final char TAB = '\t';
 
 	private CommentSanitiser() {
@@ -29,9 +28,10 @@ public class CommentSanitiser {
 					state = ParseState.SINGLE_COMMENT;
 				} else if (character == SLASH && iterator.getChar(+1) == ASTERISK) {
 					state = ParseState.MULTI_COMMENT;
-					while (parsedClassFile.length() > 0 && parsedClassFile.charAt(parsedClassFile.length() - 1) == TAB) {
-						parsedClassFile.delete(parsedClassFile.length() - 1, parsedClassFile.length());
-					}
+					// while (parsedClassFile.length() > 0 && parsedClassFile.charAt(parsedClassFile.length() - 1) ==
+					// TAB) {
+					// parsedClassFile.delete(parsedClassFile.length() - 1, parsedClassFile.length());
+					// }
 				} else {
 					if (character == DOUBLE_QUOTE) {
 						state = ParseState.STRING;
@@ -39,16 +39,21 @@ public class CommentSanitiser {
 					parsedClassFile.append(character);
 				}
 			} else if (state == ParseState.SINGLE_COMMENT) {
-				if (character == NEW_LINE) {
+				if (iterator.isLineSeparator()) {
 					state = ParseState.NONE;
-					iterator.next();
+					iterator.moveToNextSeparator();
+					if (parsedClassFile.length() > 0) {
+						parsedClassFile.append(System.lineSeparator());
+					}
 				}
 			} else if (state == ParseState.MULTI_COMMENT) {
 				if (character == SLASH && iterator.getChar(-1) == ASTERISK) {
 					state = ParseState.NONE;
-					if (iterator.getChar(+2) == NEW_LINE) {
-						iterator.next();
-						iterator.next();
+					if (iterator.isLineSeparator(+1)) {
+						iterator.moveToNextSeparator();
+						if (parsedClassFile.length() > 0) {
+							parsedClassFile.append(System.lineSeparator());
+						}
 					}
 				}
 			} else if (state == ParseState.STRING) {

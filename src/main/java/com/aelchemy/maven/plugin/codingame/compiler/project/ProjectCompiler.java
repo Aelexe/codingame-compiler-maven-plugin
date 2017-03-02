@@ -47,13 +47,13 @@ public class ProjectCompiler {
 		includedClasses.add(rootClass);
 
 		// Apend the default imports.
-		compiledProject.append("import java.util.*;\r\nimport java.io.*;\r\nimport java.math.*;\r\n");
+		compiledProject.append("import java.util.*;" + System.lineSeparator() + "import java.io.*;" + System.lineSeparator() + "import java.math.*;" + System.lineSeparator());
 
 		// Append the class opening and code to the compilation.
-		compiledProject.append("class " + rootClass.getName() + " {\r\n" + rootClass.getCode());
+		compiledProject.append("class " + rootClass.getName() + " {" + System.lineSeparator() + rootClass.getCode());
 
 		// Append new line between class code and import code.
-		compiledProject.append("\r\n");
+		compiledProject.append(System.lineSeparator());
 
 		// Append imports.
 		for (String classImport : rootClass.getImports().toArray(new String[0])) {
@@ -73,7 +73,7 @@ public class ProjectCompiler {
 		}
 
 		// Append the closing brace.
-		compiledProject.append("}\r\n");
+		compiledProject.append("}" + System.lineSeparator());
 	}
 
 	/**
@@ -92,13 +92,13 @@ public class ProjectCompiler {
 				compiledProject.append(" implements " + javaDto.getInterface());
 			}
 		}
-		compiledProject.append(" {\r\n" + javaDto.getCode());
+		compiledProject.append(" {" + System.lineSeparator() + javaDto.getCode());
 
 		// Append new line between class code and import code.
-		compiledProject.append("\r\n");
+		compiledProject.append(System.lineSeparator());
 
 		// Append the closing brace.
-		compiledProject.append("}\r\n");
+		compiledProject.append("}" + System.lineSeparator());
 
 		// Append imports.
 		for (String classImport : javaDto.getImports().toArray(new String[0])) {
