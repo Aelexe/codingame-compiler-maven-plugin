@@ -20,7 +20,7 @@ public class JavaParserTest {
 		assertEquals("SimpleClass", simpleClass.getName());
 		assertEquals("SimpleClass", simpleClass.getFullName());
 		assertTrue(simpleClass.getImports().isEmpty());
-		assertEquals(TestUtil.readResourceFile("/code_content/compressed/SimpleClass.java"), simpleClass.getCode());
+		TestUtil.assertStringEquals(TestUtil.readResourceFile("/code_content/compressed/SimpleClass.java"), simpleClass.getCode());
 		assertFalse(simpleClass.containsMainMethod());
 	}
 
@@ -57,6 +57,29 @@ public class JavaParserTest {
 	}
 
 	@Test
+	public void testParseClass_AbstractClass() throws IOException, URISyntaxException {
+		JavaDTO abstractClass = JavaParser.parseClass(TestUtil.readResourceFile("/base/AbstractClass.java"));
+
+		assertEquals("AbstractClass", abstractClass.getName());
+		assertEquals("AbstractClass", abstractClass.getFullName());
+		assertTrue(abstractClass.getImports().isEmpty());
+		assertFalse(abstractClass.containsMainMethod());
+		assertTrue(abstractClass.isAbstract());
+	}
+
+	@Test
+	public void testParseClass_ExtendsClass() throws IOException, URISyntaxException {
+		JavaDTO extendsClass = JavaParser.parseClass(TestUtil.readResourceFile("/base/ExtendsClass.java"));
+
+		assertEquals("ExtendsClass", extendsClass.getName());
+		assertEquals("ExtendsClass", extendsClass.getFullName());
+		assertTrue(extendsClass.getImports().isEmpty());
+		assertFalse(extendsClass.containsMainMethod());
+		assertTrue(extendsClass.extendsAbstract());
+		assertEquals("BaseClass", extendsClass.getBase());
+	}
+
+	@Test
 	public void testParseClass_InterfaceClass() throws IOException, URISyntaxException {
 		JavaDTO interfaceClass = JavaParser.parseClass(TestUtil.readResourceFile("/base/InterfaceClass.java"));
 
@@ -78,6 +101,34 @@ public class JavaParserTest {
 		assertFalse(implementsClass.isInterface());
 		assertTrue(implementsClass.implementsInterface());
 		assertEquals("AnInterface", implementsClass.getInterface());
+	}
+
+	@Test
+	public void testParseClass_AbstractImplementsClass() throws IOException, URISyntaxException {
+		JavaDTO abstractImplementsClass = JavaParser.parseClass(TestUtil.readResourceFile("/base/AbstractImplementsClass.java"));
+
+		assertEquals("AbstractImplementsClass", abstractImplementsClass.getName());
+		assertEquals("AbstractImplementsClass", abstractImplementsClass.getFullName());
+		assertTrue(abstractImplementsClass.getImports().isEmpty());
+		assertFalse(abstractImplementsClass.containsMainMethod());
+		assertTrue(abstractImplementsClass.isAbstract());
+		assertFalse(abstractImplementsClass.isInterface());
+		assertTrue(abstractImplementsClass.implementsInterface());
+		assertEquals("AnInterface", abstractImplementsClass.getInterface());
+	}
+
+	@Test
+	public void testParseClass_Enum() throws IOException, URISyntaxException {
+		JavaDTO enumClass = JavaParser.parseClass(TestUtil.readResourceFile("/base/Enum.java"));
+
+		assertEquals("DaysOfTheWeek", enumClass.getName());
+		assertEquals("DaysOfTheWeek", enumClass.getFullName());
+		assertTrue(enumClass.getImports().isEmpty());
+		assertFalse(enumClass.containsMainMethod());
+		assertFalse(enumClass.isAbstract());
+		assertFalse(enumClass.isInterface());
+		assertFalse(enumClass.implementsInterface());
+		assertTrue(enumClass.isEnum());
 	}
 
 	@Test

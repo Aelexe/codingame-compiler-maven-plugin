@@ -10,7 +10,7 @@ import com.aelchemy.maven.plugin.codingame.compiler.util.CommentSanitiser;
  * {@link JavaParser} contains functionality for creating {@link JavaDTO}s from .java files.
  * 
  * @author Aelexe
- *
+ * 
  */
 public class JavaParser {
 
@@ -21,8 +21,7 @@ public class JavaParser {
 	}
 
 	/**
-	 * Parses a .java file, returning a {@link JavaDTO} containing the class/interface's package name, name, imports and
-	 * code content.
+	 * Parses a .java file, returning a {@link JavaDTO} containing the class/interface's package name, name, imports and code content.
 	 * 
 	 * @param javaFile The string contents of the .java file to parse.
 	 * @return {@link JavaDTO} containing the parsed class/interface details.
@@ -52,13 +51,22 @@ public class JavaParser {
 				javaDto.addImport(sImport);
 			} else if (word.equals("class")) {
 				javaDto.setName(split[i + 1]);
+				if (split[i - 1].equals("abstract")) {
+					javaDto.setIsAbstract(true);
+				}
 				if (split[i + 2].equals("implements")) {
 					javaDto.setInterface(split[i + 3]);
+				} else if (split[i + 2].equals("extends")) {
+					javaDto.setBase(split[i + 3]);
 				}
 				break;
 			} else if (word.equals("interface")) {
 				javaDto.setName(split[i + 1]);
 				javaDto.setIsInterface(true);
+				break;
+			} else if (word.equals("enum")) {
+				javaDto.setName(split[i + 1]);
+				javaDto.setIsEnum(true);
 				break;
 			}
 		}

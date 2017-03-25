@@ -7,15 +7,17 @@ import java.util.Set;
  * {@link JavaDTO} is a DTO containing the package name, name and fully qualified imports contained within a .java file.
  * 
  * @author Aelexe
- *
+ * 
  */
 public class JavaDTO {
 
-	private String sPackage, name, sInterface;
+	private String sPackage, name, sInterface, base;
 	private final Set<String> imports = new HashSet<String>();
 	private String code;
 	private boolean containsMainMethod;
+	private boolean isAbstract, extendsAbstract;
 	private boolean isInterface, implementsInterface;
+	private boolean isEnum;
 
 	public String getPackage() {
 		return sPackage;
@@ -51,6 +53,15 @@ public class JavaDTO {
 		implementsInterface = true;
 	}
 
+	public String getBase() {
+		return base;
+	}
+
+	public void setBase(String base) {
+		this.base = base;
+		extendsAbstract = true;
+	}
+
 	public Set<String> getImports() {
 		return imports;
 	}
@@ -75,6 +86,18 @@ public class JavaDTO {
 		this.containsMainMethod = containsMainMethod;
 	}
 
+	public boolean isAbstract() {
+		return isAbstract;
+	}
+
+	public void setIsAbstract(final boolean isAbstract) {
+		this.isAbstract = isAbstract;
+	}
+
+	public boolean extendsAbstract() {
+		return extendsAbstract;
+	}
+
 	public boolean isInterface() {
 		return isInterface;
 	}
@@ -85,6 +108,14 @@ public class JavaDTO {
 
 	public boolean implementsInterface() {
 		return implementsInterface;
+	}
+
+	public void setIsEnum(boolean isEnum) {
+		this.isEnum = isEnum;
+	}
+
+	public boolean isEnum() {
+		return isEnum;
 	}
 
 }

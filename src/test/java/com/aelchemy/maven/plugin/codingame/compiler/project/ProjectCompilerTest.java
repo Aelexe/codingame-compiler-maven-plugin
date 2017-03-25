@@ -103,4 +103,41 @@ public class ProjectCompilerTest {
 
 		TestUtil.assertStringEquals(TestUtil.readResourceFile("/compiled/Interfaces.java"), new ProjectCompiler(simpleClass, project).compileProject());
 	}
+
+	@Test
+	public void testCompileProject_Abstract() throws IOException, URISyntaxException {
+		JavaDTO abstractClass = new JavaDTO();
+		abstractClass.setName("SimpleClass");
+		abstractClass.setCode(TestUtil.readResourceFile("/code_content/compressed/SimpleClass.java"));
+		abstractClass.setIsAbstract(true);
+
+		JavaDTO stringClass = new JavaDTO();
+		stringClass.setName("StringClass");
+		stringClass.setCode(TestUtil.readResourceFile("/code_content/compressed/StringClass.java"));
+		stringClass.setBase("SimpleClass");
+
+		ProjectDTO project = new ProjectDTO();
+		project.addClass(abstractClass);
+		project.addClass(stringClass);
+
+		TestUtil.assertStringEquals(TestUtil.readResourceFile("/compiled/Abstract.java"), new ProjectCompiler(stringClass, project).compileProject());
+	}
+
+	@Test
+	public void testCompileProject_Enum() throws IOException, URISyntaxException {
+		JavaDTO simpleClass = new JavaDTO();
+		simpleClass.setName("SimpleClass");
+		simpleClass.setCode(TestUtil.readResourceFile("/code_content/compressed/SimpleClass.java"));
+
+		JavaDTO enumClass = new JavaDTO();
+		enumClass.setName("DaysOfTheWeek");
+		enumClass.setCode(TestUtil.readResourceFile("/code_content/compressed/Enum.java"));
+		enumClass.setIsEnum(true);
+
+		ProjectDTO project = new ProjectDTO();
+		project.addClass(simpleClass);
+		project.addClass(enumClass);
+
+		TestUtil.assertStringEquals(TestUtil.readResourceFile("/compiled/Enum.java"), new ProjectCompiler(simpleClass, project).compileProject());
+	}
 }

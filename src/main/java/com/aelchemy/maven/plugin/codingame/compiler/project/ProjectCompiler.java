@@ -9,7 +9,7 @@ import com.aelchemy.maven.plugin.codingame.compiler.java.JavaDTO;
  * {@link ProjectCompiler} contains the functionality for compiling a {@link ProjectDTO} into a single .java file.
  * 
  * @author Aelexe
- *
+ * 
  */
 public class ProjectCompiler {
 
@@ -39,15 +39,15 @@ public class ProjectCompiler {
 	}
 
 	/**
-	 * Appends the root class to the project compilation. Every import and their imports along with every class in the
-	 * same package is included within the top level of the root class.
+	 * Appends the root class to the project compilation. Every import and their imports along with every class in the same package is included within the top level of the root class.
 	 */
 	private void appendRootClass() {
 		// Add the class to the included classes.
 		includedClasses.add(rootClass);
 
 		// Apend the default imports.
-		compiledProject.append("import java.util.*;" + System.lineSeparator() + "import java.io.*;" + System.lineSeparator() + "import java.math.*;" + System.lineSeparator());
+		compiledProject.append("import java.util.*;" + System.lineSeparator() + "import java.io.*;" + System.lineSeparator() + "import java.math.*;"
+				+ System.lineSeparator());
 
 		// Append the class opening and code to the compilation.
 		compiledProject.append("class " + rootClass.getName() + " {" + System.lineSeparator() + rootClass.getCode());
@@ -84,10 +84,17 @@ public class ProjectCompiler {
 	private void appendClass(final JavaDTO javaDto) {
 		// Add the class to the included classes and append the class opening and code to the compilation.
 		includedClasses.add(javaDto);
-		if (javaDto.isInterface()) {
+		if (javaDto.isAbstract()) {
+			compiledProject.append("private static abstract class " + javaDto.getName());
+		} else if (javaDto.isInterface()) {
 			compiledProject.append("private static interface " + javaDto.getName());
+		} else if (javaDto.isEnum()) {
+			compiledProject.append("private static enum " + javaDto.getName());
 		} else {
 			compiledProject.append("private static class " + javaDto.getName());
+			if (javaDto.extendsAbstract()) {
+				compiledProject.append(" extends " + javaDto.getBase());
+			}
 			if (javaDto.implementsInterface()) {
 				compiledProject.append(" implements " + javaDto.getInterface());
 			}
